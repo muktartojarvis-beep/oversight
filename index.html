@@ -2,6 +2,11 @@
 <html lang="en" data-theme="cortana">
 <head>
 <meta charset="utf-8">
+<!-- Hash-based CSP: no 'unsafe-inline' script, so injected markup and on* handlers cannot run,
+     and connect-src pins outbound requests to GitHub so a token can never be posted elsewhere.
+     The hash is computed over the inline script at build time by build.mjs. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-K2eFV6EWlLoOcvobS6tytenF/mgd0WTUfjKBYovprAM='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.github.com; base-uri 'none'; form-action 'none'; object-src 'none'; frame-ancestors 'none'">
+<meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#03060d">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -419,7 +424,7 @@ footer{padding:20px 0 calc(26px + var(--safe-b));border-top:1px solid var(--line
 <div id="auth">
   <div class="box holo">
     <h2>SECURE LINK REQUIRED</h2>
-    <p class="lead">This terminal needs a GitHub access token to read and write the project archive. It is stored only on this device and never transmitted anywhere except GitHub.</p>
+    <p class="lead">This terminal needs a GitHub access token to read and write the project archive. It is kept in this browser's local storage for this site and sent only to api.github.com. Use a token scoped to the data repo alone, and revoke it if this device is lost.</p>
     <div class="fld">
       <label>Access token</label>
       <input id="a-token" type="password" placeholder="github_pat_… / ghp_…" autocomplete="off" spellcheck="false">
@@ -541,258 +546,38 @@ const SEED = {
   "meta": {
     "schema": 1,
     "title": "PROJECT OVERSIGHT",
-    "operator": "Mukki",
-    "updated_at": "2026-08-15T21:20:58Z",
-    "updated_by": "system"
+    "operator": "—",
+    "updated_at": "2026-08-15T00:00:00Z",
+    "updated_by": "build"
   },
   "projects": [
     {
-      "id": "prj_aurora",
-      "name": "Aurora Rebuild",
-      "codename": "AURORA",
-      "description": "Full front-end rewrite of the customer portal. Moving off the legacy stack onto a component system with a shared design language.",
-      "status": "active",
-      "phase": "Build",
-      "progress": 0,
-      "priority": "critical",
-      "health": "amber",
-      "owner": "Mukki",
-      "team": ["Priya", "Dan", "Claude"],
-      "start_date": "2026-06-01",
-      "due_date": "2026-09-12",
-      "tags": ["frontend", "flagship"],
-      "links": [
-        { "label": "Repo", "url": "https://github.com" },
-        { "label": "Design", "url": "https://figma.com" }
-      ],
-      "budget": { "planned": 48000, "spent": 31200, "currency": "GBP" },
-      "hours": { "planned": 620, "spent": 448 },
-      "next_action": "Land the auth refactor before the design freeze",
-      "milestones": [
-        { "id": "ms_a1", "title": "Design system locked", "done": true, "due_date": "2026-06-20", "owner": "Priya" },
-        { "id": "ms_a2", "title": "Component library v1", "done": true, "due_date": "2026-07-10", "owner": "Dan" },
-        { "id": "ms_a3", "title": "Auth + session refactor", "done": true, "due_date": "2026-08-01", "owner": "Mukki" },
-        { "id": "ms_a4", "title": "Portal shell migrated", "done": false, "due_date": "2026-08-25", "owner": "Dan" },
-        { "id": "ms_a5", "title": "Billing screens migrated", "done": false, "due_date": "2026-09-05", "owner": "Priya" },
-        { "id": "ms_a6", "title": "Cutover + legacy shutdown", "done": false, "due_date": "2026-09-12", "owner": "Mukki" }
-      ],
-      "blockers": [
-        {
-          "id": "bl_a1",
-          "title": "Legacy SSO contract still unsigned",
-          "severity": "high",
-          "opened_at": "2026-08-04T09:00:00Z",
-          "resolved_at": null,
-          "notes": "Vendor legal is sitting on it. Blocks the cutover milestone, not the build."
-        }
-      ],
-      "notes": [
-        { "id": "nt_a1", "author": "Mukki", "body": "Design freeze is the real deadline here — everything after it is mechanical.", "created_at": "2026-08-10T14:02:00Z" }
-      ],
-      "metrics": [
-        { "label": "Screens migrated", "value": 34, "target": 52, "unit": "", "trend": "up" },
-        { "label": "Lighthouse", "value": 94, "target": 90, "unit": "", "trend": "up" },
-        { "label": "Open bugs", "value": 17, "target": 5, "unit": "", "trend": "down" }
-      ],
-      "created_at": "2026-06-01T09:00:00Z",
-      "updated_at": "2026-08-15T18:30:00Z"
-    },
-    {
-      "id": "prj_longbow",
-      "name": "Data Warehouse Migration",
-      "codename": "LONGBOW",
-      "description": "Consolidating four reporting databases into a single warehouse with a governed semantic layer.",
-      "status": "blocked",
-      "phase": "Integration",
-      "progress": 0,
-      "priority": "high",
-      "health": "red",
-      "owner": "Sam",
-      "team": ["Sam", "Ravi"],
-      "start_date": "2026-05-15",
-      "due_date": "2026-08-30",
-      "tags": ["data", "infra"],
-      "links": [{ "label": "Runbook", "url": "https://example.com" }],
-      "budget": { "planned": 26000, "spent": 24100, "currency": "GBP" },
-      "hours": { "planned": 340, "spent": 322 },
-      "next_action": "Escalate the finance schema sign-off — this is the only thing moving",
-      "milestones": [
-        { "id": "ms_l1", "title": "Source audit complete", "done": true, "due_date": "2026-06-01", "owner": "Sam" },
-        { "id": "ms_l2", "title": "Staging pipelines live", "done": true, "due_date": "2026-07-01", "owner": "Ravi" },
-        { "id": "ms_l3", "title": "Finance schema sign-off", "done": false, "due_date": "2026-07-28", "owner": "Sam" },
-        { "id": "ms_l4", "title": "Cutover rehearsal", "done": false, "due_date": "2026-08-22", "owner": "Ravi" }
-      ],
-      "blockers": [
-        {
-          "id": "bl_l1",
-          "title": "Finance won't sign off on the revenue schema",
-          "severity": "critical",
-          "opened_at": "2026-07-21T10:00:00Z",
-          "resolved_at": null,
-          "notes": "Three weeks open. Disagreement over how refunds are attributed across periods."
-        },
-        {
-          "id": "bl_l2",
-          "title": "Warehouse credit burn ahead of plan",
-          "severity": "medium",
-          "opened_at": "2026-08-09T10:00:00Z",
-          "resolved_at": null,
-          "notes": "Backfills are heavier than modelled. Not fatal but eats the contingency."
-        }
-      ],
-      "notes": [
-        { "id": "nt_l1", "author": "Claude", "body": "Budget is 93% consumed against 66% of milestones. This overruns unless the schema unblocks this week.", "created_at": "2026-08-14T08:15:00Z" }
-      ],
-      "metrics": [
-        { "label": "Tables migrated", "value": 118, "target": 190, "unit": "", "trend": "flat" },
-        { "label": "Days blocked", "value": 25, "target": 0, "unit": "d", "trend": "up" }
-      ],
-      "created_at": "2026-05-15T09:00:00Z",
-      "updated_at": "2026-08-14T08:15:00Z"
-    },
-    {
-      "id": "prj_kestrel",
-      "name": "Mobile App v2",
-      "codename": "KESTREL",
-      "description": "Second-generation mobile client with offline-first sync and a rebuilt onboarding flow.",
-      "status": "review",
-      "phase": "QA",
-      "progress": 0,
-      "priority": "high",
-      "health": "green",
-      "owner": "Priya",
-      "team": ["Priya", "Tom"],
-      "start_date": "2026-04-01",
-      "due_date": "2026-08-28",
-      "tags": ["mobile", "flagship"],
-      "links": [{ "label": "TestFlight", "url": "https://example.com" }],
-      "budget": { "planned": 55000, "spent": 41000, "currency": "GBP" },
-      "hours": { "planned": 700, "spent": 596 },
-      "next_action": "Clear the last 4 P1 bugs and submit to review",
-      "milestones": [
-        { "id": "ms_k1", "title": "Offline sync engine", "done": true, "due_date": "2026-05-20", "owner": "Tom" },
-        { "id": "ms_k2", "title": "Onboarding redesign", "done": true, "due_date": "2026-06-15", "owner": "Priya" },
-        { "id": "ms_k3", "title": "Feature complete", "done": true, "due_date": "2026-07-20", "owner": "Priya" },
-        { "id": "ms_k4", "title": "Beta with 200 users", "done": true, "due_date": "2026-08-05", "owner": "Tom" },
-        { "id": "ms_k5", "title": "Store submission", "done": false, "due_date": "2026-08-28", "owner": "Priya" }
-      ],
-      "blockers": [],
-      "notes": [
-        { "id": "nt_k1", "author": "Priya", "body": "Beta crash rate came in at 0.3%, well under the 1% gate.", "created_at": "2026-08-12T11:00:00Z" }
-      ],
-      "metrics": [
-        { "label": "Crash-free", "value": 99.7, "target": 99, "unit": "%", "trend": "up" },
-        { "label": "P1 bugs", "value": 4, "target": 0, "unit": "", "trend": "down" },
-        { "label": "Beta users", "value": 214, "target": 200, "unit": "", "trend": "up" }
-      ],
-      "created_at": "2026-04-01T09:00:00Z",
-      "updated_at": "2026-08-13T16:40:00Z"
-    },
-    {
-      "id": "prj_vestige",
-      "name": "Compliance Automation",
-      "codename": "VESTIGE",
-      "description": "Automating evidence collection and control mapping ahead of the annual audit.",
-      "status": "active",
-      "phase": "Discovery",
-      "progress": 0,
-      "priority": "medium",
-      "health": "green",
-      "owner": "Ravi",
-      "team": ["Ravi"],
-      "start_date": "2026-07-20",
-      "due_date": "2026-11-15",
-      "tags": ["compliance", "internal"],
-      "links": [],
-      "budget": { "planned": 18000, "spent": 3400, "currency": "GBP" },
-      "hours": { "planned": 240, "spent": 52 },
-      "next_action": "Finish the control inventory before scoping the tooling",
-      "milestones": [
-        { "id": "ms_v1", "title": "Control inventory", "done": true, "due_date": "2026-08-10", "owner": "Ravi" },
-        { "id": "ms_v2", "title": "Evidence source mapping", "done": false, "due_date": "2026-09-05", "owner": "Ravi" },
-        { "id": "ms_v3", "title": "Automation build", "done": false, "due_date": "2026-10-20", "owner": "Ravi" },
-        { "id": "ms_v4", "title": "Dry-run audit", "done": false, "due_date": "2026-11-15", "owner": "Ravi" }
-      ],
-      "blockers": [],
-      "notes": [],
-      "metrics": [{ "label": "Controls mapped", "value": 61, "target": 210, "unit": "", "trend": "up" }],
-      "created_at": "2026-07-20T09:00:00Z",
-      "updated_at": "2026-08-11T09:30:00Z"
-    },
-    {
-      "id": "prj_harbinger",
-      "name": "Pricing Experiment",
-      "codename": "HARBINGER",
-      "description": "Testing three packaging models against the self-serve funnel to find the revenue-optimal tier structure.",
+      "id": "prj_placeholder",
+      "name": "Awaiting secure link",
+      "codename": "STANDBY",
+      "description": "This terminal is not linked to an archive yet. Provide a GitHub access token to load live project data. Nothing shown here is real.",
       "status": "planning",
-      "phase": "Design",
+      "phase": "Standby",
       "progress": 0,
-      "priority": "medium",
-      "health": "green",
-      "owner": "Mukki",
-      "team": ["Mukki", "Sam"],
-      "start_date": "2026-09-01",
-      "due_date": "2026-12-01",
-      "tags": ["growth", "revenue"],
+      "priority": "low",
+      "owner": "—",
+      "team": [],
+      "start_date": "",
+      "due_date": "",
+      "tags": ["placeholder"],
       "links": [],
-      "budget": { "planned": 9000, "spent": 0, "currency": "GBP" },
-      "hours": { "planned": 120, "spent": 8 },
-      "next_action": "Lock the three variants and the success metric",
-      "milestones": [
-        { "id": "ms_h1", "title": "Variant design", "done": false, "due_date": "2026-09-15", "owner": "Mukki" },
-        { "id": "ms_h2", "title": "Instrumentation", "done": false, "due_date": "2026-10-01", "owner": "Sam" },
-        { "id": "ms_h3", "title": "Run + read results", "done": false, "due_date": "2026-12-01", "owner": "Mukki" }
-      ],
+      "budget": {},
+      "hours": {},
+      "next_action": "Establish the secure link to load your archive",
+      "milestones": [],
       "blockers": [],
       "notes": [],
       "metrics": [],
-      "created_at": "2026-08-02T09:00:00Z",
-      "updated_at": "2026-08-02T09:00:00Z"
-    },
-    {
-      "id": "prj_silentcart",
-      "name": "Checkout Rewrite",
-      "codename": "SILENTCART",
-      "description": "Rebuilt the checkout to cut abandonment. Shipped and measured.",
-      "status": "done",
-      "phase": "Shipped",
-      "progress": 100,
-      "priority": "high",
-      "health": "green",
-      "owner": "Dan",
-      "team": ["Dan", "Tom"],
-      "start_date": "2026-02-01",
-      "due_date": "2026-06-30",
-      "tags": ["revenue", "frontend"],
-      "links": [],
-      "budget": { "planned": 30000, "spent": 27800, "currency": "GBP" },
-      "hours": { "planned": 400, "spent": 371 },
-      "next_action": "",
-      "milestones": [
-        { "id": "ms_s1", "title": "Flow redesign", "done": true, "due_date": "2026-03-01", "owner": "Dan" },
-        { "id": "ms_s2", "title": "Payment provider swap", "done": true, "due_date": "2026-04-15", "owner": "Tom" },
-        { "id": "ms_s3", "title": "Rollout to 100%", "done": true, "due_date": "2026-06-30", "owner": "Dan" }
-      ],
-      "blockers": [],
-      "notes": [
-        { "id": "nt_s1", "author": "Dan", "body": "Abandonment down 11.4pp against the control. Well past the 5pp target.", "created_at": "2026-07-02T10:00:00Z" }
-      ],
-      "metrics": [{ "label": "Abandonment", "value": 42.1, "target": 48, "unit": "%", "trend": "down" }],
-      "created_at": "2026-02-01T09:00:00Z",
-      "updated_at": "2026-07-02T10:00:00Z"
+      "created_at": "2026-08-15T00:00:00Z",
+      "updated_at": "2026-08-15T00:00:00Z"
     }
   ],
-  "activity": [
-    { "id": "act_9", "project_id": "prj_aurora", "actor": "Cowork", "action": "milestone", "detail": "Marked \"Auth + session refactor\" complete", "created_at": "2026-08-15T18:30:00Z" },
-    { "id": "act_8", "project_id": "prj_longbow", "actor": "Claude", "action": "note", "detail": "Flagged budget burn vs milestone completion", "created_at": "2026-08-14T08:15:00Z" },
-    { "id": "act_7", "project_id": "prj_kestrel", "actor": "Priya", "action": "status", "detail": "active → review", "created_at": "2026-08-13T16:40:00Z" },
-    { "id": "act_6", "project_id": "prj_kestrel", "actor": "Priya", "action": "note", "detail": "Beta crash rate 0.3%, under the gate", "created_at": "2026-08-12T11:00:00Z" },
-    { "id": "act_5", "project_id": "prj_vestige", "actor": "Ravi", "action": "milestone", "detail": "Marked \"Control inventory\" complete", "created_at": "2026-08-11T09:30:00Z" },
-    { "id": "act_4", "project_id": "prj_aurora", "actor": "Mukki", "action": "note", "detail": "Design freeze is the real deadline", "created_at": "2026-08-10T14:02:00Z" },
-    { "id": "act_3", "project_id": "prj_longbow", "actor": "Sam", "action": "blocker", "detail": "Opened \"Warehouse credit burn ahead of plan\"", "created_at": "2026-08-09T10:00:00Z" },
-    { "id": "act_2", "project_id": "prj_aurora", "actor": "Mukki", "action": "blocker", "detail": "Opened \"Legacy SSO contract still unsigned\"", "created_at": "2026-08-04T09:00:00Z" },
-    { "id": "act_1", "project_id": "prj_harbinger", "actor": "Mukki", "action": "created", "detail": "Project created", "created_at": "2026-08-02T09:00:00Z" }
-  ]
+  "activity": []
 };
 const LS = 'oversight.cfg.v1';
 const $  = (s, r = document) => r.querySelector(s);
@@ -805,7 +590,9 @@ const state = {
 let cfg = { token: '', owner: '', repo: '', path: 'data.json', branch: 'main' };
 
 /* ---------- utils ---------- */
-const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const esc = s => String(s ?? '').replace(/[&<>"'`]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '`': '&#96;' }[c]));
+// Links come from the archive, which is semi-trusted: allow http(s) only.
+const safeUrl = u => /^https?:\/\//i.test(String(u ?? '')) ? String(u) : '#';
 const uid = p => p + '_' + Math.random().toString(36).slice(2, 9);
 const nowISO = () => new Date().toISOString();
 const dnum = v => (v === null || v === undefined || v === '') ? null : Number(v);
@@ -915,8 +702,12 @@ function normalise(d) {
     p.links = Array.isArray(p.links) ? p.links : [];
     p.team = Array.isArray(p.team) ? p.team : [];
     p.tags = Array.isArray(p.tags) ? p.tags : [];
-    p.budget = p.budget || {}; p.hours = p.hours || {};
-    p.status ||= 'planning'; p.priority ||= 'medium';
+    p.budget = (p.budget && typeof p.budget === 'object') ? p.budget : {};
+    p.hours = (p.hours && typeof p.hours === 'object') ? p.hours : {};
+    // Coerce to strings so a malformed record can't throw and blank the whole view.
+    p.name = String(p.name ?? 'Untitled');
+    p.status = String(p.status || 'planning');
+    p.priority = String(p.priority || 'medium');
   });
   return d;
 }
@@ -930,8 +721,11 @@ function progressOf(p) {
   return Math.max(0, Math.min(100, Number(p.progress) || 0));
 }
 function openBlockers(p) { return p.blockers.filter(b => !b.resolved_at); }
+const HEALTHS = ['green', 'amber', 'red'];
 function healthOf(p) {
-  if (p.health_lock && p.health) return p.health;
+  // Only ever return one of the three literals — a pinned value from the archive is
+  // semi-trusted input and must not escape this set (it reaches innerHTML).
+  if (p.health_lock && HEALTHS.includes(p.health)) return p.health;
   if (p.status === 'done' || p.status === 'archived') return 'green';
   const dl = daysUntil(p.due_date), prog = progressOf(p), ob = openBlockers(p);
   if (dl !== null && dl < 0) return 'red';
@@ -1064,7 +858,7 @@ function renderGrid() {
         ${p.phase ? `<span class="chip tag">${esc(p.phase)}</span>` : ''}
         ${(p.tags || []).slice(0, 2).map(t => `<span class="chip tag">${esc(t)}</span>`).join('')}
       </div>
-      <div class="meter ${h}"><i data-w="${prog}"></i></div>
+      <div class="meter ${esc(h)}"><i data-w="${prog}"></i></div>
       <div class="cfoot">
         <span class="who"><span class="av">${esc(initials(p.owner))}</span>${esc(p.owner || 'unassigned')}</span>
         <span class="due ${dueCls}">${esc(dueTxt)}</span>
@@ -1092,7 +886,7 @@ function renderBoard() {
         return `<div class="mini" data-id="${esc(p.id)}" style="border-left:2px solid ${col}">
           ${p.codename ? `<div class="code">${esc(p.codename)}</div>` : ''}
           <h5>${esc(p.name)}</h5>
-          <div class="meter ${h}" style="margin:0 0 7px"><i data-w="${prog}"></i></div>
+          <div class="meter ${esc(h)}" style="margin:0 0 7px"><i data-w="${prog}"></i></div>
           <div class="row2"><span>${esc(initials(p.owner))} · ${prog}%</span><span>${esc(fmtDate(p.due_date))}</span></div>
         </div>`;
       }).join('') || `<div style="font-family:var(--f-mono);font-size:9px;color:var(--txt-3);letter-spacing:.14em;padding:6px 2px">EMPTY</div>`}
@@ -1207,7 +1001,7 @@ function readView(p) {
       <div class="chips" style="margin:0 0 9px">
         <span class="chip s-${esc(p.status)}">${esc(p.status)}</span>
         <span class="chip pr-${esc(p.priority)}">${esc(p.priority)}</span>
-        <span class="chip" style="color:${h === 'red' ? 'var(--red)' : h === 'amber' ? 'var(--amber)' : 'var(--green)'};border-color:currentColor">${h} health</span>
+        <span class="chip" style="color:${h === 'red' ? 'var(--red)' : h === 'amber' ? 'var(--amber)' : 'var(--green)'};border-color:currentColor">${esc(h)} health</span>
       </div>
       ${p.description ? `<p style="margin:0;font-size:13.5px;color:var(--txt-2);line-height:1.5">${esc(p.description)}</p>` : ''}
     </div>
@@ -1290,7 +1084,7 @@ function readView(p) {
   </div>
 
   ${p.links.length ? `<div class="sect"><h4>Links</h4><div style="display:flex;flex-wrap:wrap;gap:8px">
-    ${p.links.map(l => `<a class="btn sm" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label || l.url)} ↗</a>`).join('')}
+    ${p.links.map(l => `<a class="btn sm" href="${esc(safeUrl(l.url))}" target="_blank" rel="noopener noreferrer">${esc(l.label || l.url)} ↗</a>`).join('')}
   </div></div>` : ''}
 
   <div class="sect">
@@ -1353,25 +1147,41 @@ function editForm(p) {
 
 /* ---------- mutations ---------- */
 const canWrite = () => !!(cfg.token && cfg.owner && cfg.repo);
+/** Read → mutate → write. Returns true only if the change was actually committed.
+ *  `fn` may return false to mean "nothing to do" — no write is issued. */
 async function mutate(fn, message) {
-  if (state.busy) return;
+  if (state.busy) { toast('Write already in progress', true); return false; }
   state.busy = true;
   const bar = $('#sysTxt'); const prev = bar.textContent; bar.textContent = 'Writing…';
   try {
-    if (canWrite()) {
-      const fresh = await ghRead();               // re-read to avoid clobbering Cowork writes
-      const d = normalise(fresh.data);
-      fn(d);
-      state.sha = await ghWrite(d, fresh.sha, message);
-      state.data = d; state.mode = 'github';
-    } else {
-      fn(state.data);
+    if (!canWrite()) {
+      if (fn(state.data) === false) return false;
       state.data.meta.updated_at = nowISO();
+      render(); toast('Updated locally — no write link');
+      return true;
     }
-    render();
-    toast(canWrite() ? 'Archive updated' : 'Updated locally — no write link');
+    // Re-read before every write, and retry on a concurrent-edit conflict, so a
+    // change made elsewhere (phone, another agent) is never silently clobbered.
+    let lastErr;
+    for (let attempt = 0; attempt < 4; attempt++) {
+      const fresh = await ghRead();
+      const d = normalise(fresh.data);
+      if (fn(d) === false) { state.data = d; state.sha = fresh.sha; render(); return false; }
+      try {
+        state.sha = await ghWrite(d, fresh.sha, message);
+        state.data = d; state.mode = 'github';
+        render(); toast('Archive updated');
+        return true;
+      } catch (e) {
+        lastErr = e;
+        if (e.status !== 409 && e.status !== 422) throw e;
+        await new Promise(r => setTimeout(r, 250 * (attempt + 1)));
+      }
+    }
+    throw lastErr;
   } catch (e) {
     toast('Write failed: ' + e.message, true);
+    return false;
   } finally { state.busy = false; bar.textContent = prev; }
 }
 function logAct(d, projectId, action, detail) {
@@ -1418,8 +1228,8 @@ function wire() {
     if (ms) {
       const mid = ms.dataset.ms;
       return mutate(d => {
-        const pp = d.projects.find(x => x.id === p.id); if (!pp) return;
-        const m = pp.milestones.find(x => x.id === mid); if (!m) return;
+        const pp = d.projects.find(x => x.id === p.id); if (!pp) return false;
+        const m = pp.milestones.find(x => x.id === mid); if (!m) return false;
         m.done = !m.done; m.completed_at = m.done ? nowISO() : null; touch(pp);
         logAct(d, pp.id, 'milestone', (m.done ? 'Completed' : 'Reopened') + ' "' + m.title + '"');
       }, 'oversight: milestone toggle');
@@ -1429,8 +1239,8 @@ function wire() {
     if (rb) {
       const bid = rb.dataset.resolve;
       return mutate(d => {
-        const pp = d.projects.find(x => x.id === p.id); if (!pp) return;
-        const b = pp.blockers.find(x => x.id === bid); if (!b) return;
+        const pp = d.projects.find(x => x.id === p.id); if (!pp) return false;
+        const b = pp.blockers.find(x => x.id === bid); if (!b) return false;
         b.resolved_at = nowISO(); touch(pp);
         logAct(d, pp.id, 'blocker', 'Resolved "' + b.title + '"');
       }, 'oversight: resolve blocker');
@@ -1440,7 +1250,7 @@ function wire() {
       const t = prompt('Milestone title'); if (!t) return;
       const due = prompt('Due date (YYYY-MM-DD, optional)') || '';
       return mutate(d => {
-        const pp = d.projects.find(x => x.id === p.id); if (!pp) return;
+        const pp = d.projects.find(x => x.id === p.id); if (!pp) return false;
         pp.milestones.push({ id: uid('ms'), title: t, done: false, due_date: due, owner: pp.owner || '' }); touch(pp);
         logAct(d, pp.id, 'milestone', 'Added "' + t + '"');
       }, 'oversight: add milestone');
@@ -1451,7 +1261,7 @@ function wire() {
       const sev = (prompt('Severity: critical / high / medium / low', 'high') || 'high').toLowerCase();
       const notes = prompt('Detail (optional)') || '';
       return mutate(d => {
-        const pp = d.projects.find(x => x.id === p.id); if (!pp) return;
+        const pp = d.projects.find(x => x.id === p.id); if (!pp) return false;
         pp.blockers.push({ id: uid('bl'), title: t, severity: sev, opened_at: nowISO(), resolved_at: null, notes }); touch(pp);
         logAct(d, pp.id, 'blocker', 'Opened "' + t + '"');
       }, 'oversight: add blocker');
@@ -1460,7 +1270,7 @@ function wire() {
     if (e.target.closest('#addNote')) {
       const body = $('#newNote').value.trim(); if (!body) return;
       return mutate(d => {
-        const pp = d.projects.find(x => x.id === p.id); if (!pp) return;
+        const pp = d.projects.find(x => x.id === p.id); if (!pp) return false;
         pp.notes.push({ id: uid('nt'), author: d.meta.operator || 'Operator', body, created_at: nowISO() }); touch(pp);
         logAct(d, pp.id, 'note', body.slice(0, 90));
       }, 'oversight: add note');
@@ -1480,8 +1290,8 @@ function wire() {
         hours: { planned: dnum(v('f-hp')), spent: dnum(v('f-hs')) }
       };
       const before = { status: p.status, progress: progressOf(p) };
-      await mutate(d => {
-        const pp = d.projects.find(x => x.id === p.id); if (!pp) return;
+      const committed = await mutate(d => {
+        const pp = d.projects.find(x => x.id === p.id); if (!pp) return false;
         Object.entries(patch).forEach(([k, val]) => { if (val !== undefined) pp[k] = val; });
         touch(pp);
         const bits = [];
@@ -1489,7 +1299,7 @@ function wire() {
         if (before.progress !== progressOf(pp)) bits.push(before.progress + '% → ' + progressOf(pp) + '%');
         logAct(d, pp.id, 'update', bits.length ? bits.join(', ') : 'Record edited');
       }, 'oversight: update ' + patch.name);
-      state.editing = false; renderDrawer();
+      if (committed) { state.editing = false; renderDrawer(); }   // keep the form open if the write failed
     }
   });
 
